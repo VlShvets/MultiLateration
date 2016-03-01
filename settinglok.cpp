@@ -1,9 +1,9 @@
 #include "settinglok.h"
 
-SettingLok::SettingLok(Model *_model, QWidget *parent) :
+SettingLok::SettingLok(Painter *_painter, QWidget *parent) :
     QWidget(parent)
 {
-    this->model = _model;
+    this->painter = _painter;
 
     this->setWindowTitle(QObject::tr("Параметры измерителей"));
 
@@ -13,7 +13,7 @@ SettingLok::SettingLok(Model *_model, QWidget *parent) :
     QSlider *sliderLok = new QSlider(Qt::Horizontal);
     sliderLok->setRange(1, 5);
     sliderLok->setTickInterval(1);
-    sliderLok->setValue(model->nLok);
+    sliderLok->setValue(painter->nLok);
     sliderLok->setTickPosition(QSlider::TicksAbove);
     sliderLok->setFixedWidth(100);
     QObject::connect(sliderLok, SIGNAL(valueChanged(int)), this, SLOT(changeNumberLok(int)));
@@ -21,13 +21,13 @@ SettingLok::SettingLok(Model *_model, QWidget *parent) :
     lNumberLok = new QLCDNumber(1);
     lNumberLok->setSegmentStyle(QLCDNumber::Flat);
     lNumberLok->setMode(QLCDNumber::Dec);
-    lNumberLok->display(model->nLok);
+    lNumberLok->display(painter->nLok);
     lNumberLok->setFixedWidth(100);
     gridLayout->addWidget(lNumberLok, 0, 2, 1, 1);
 
     gridLayout->addWidget(new QLabel(QObject::tr("\tПараметры измерителей:")), 1, 0, 1, 3);
 
-    tParLok = new QTableWidget(model->nLok, 7, this);
+    tParLok = new QTableWidget(painter->nLok, 7, this);
     tParLok->setHorizontalHeaderLabels(QStringList() << "Первая полуось" << "Вторая полуось" << "Смещение по X" << "Смещение по Y" <<
                                         "Нач. фаза (360º)" << "Скорость (км/ч)" << "Радиус локации");
     QObject::connect(tParLok, SIGNAL(cellChanged(int,int)), this, SLOT(changeParLok(int,int)));
@@ -46,22 +46,22 @@ SettingLok::~SettingLok()
 
 void SettingLok::loadTable()
 {
-    for(int i = 0; i < model->nLok; ++i)
+    for(int i = 0; i < painter->nLok; ++i)
     {
-        tParLok->setItem(i, 0, new QTableWidgetItem(QString::number(model->paramA.at(i))));
-        tParLok->setItem(i, 1, new QTableWidgetItem(QString::number(model->paramB.at(i))));
-        tParLok->setItem(i, 2, new QTableWidgetItem(QString::number(model->deltaX.at(i))));
-        tParLok->setItem(i, 3, new QTableWidgetItem(QString::number(model->deltaY.at(i))));
-        tParLok->setItem(i, 4, new QTableWidgetItem(QString::number(model->startph.at(i))));
-        tParLok->setItem(i, 5, new QTableWidgetItem(QString::number(model->speedL.at(i))));
-        tParLok->setItem(i, 6, new QTableWidgetItem(QString::number(model->radius.at(i))));
+        tParLok->setItem(i, 0, new QTableWidgetItem(QString::number(painter->paramA.at(i))));
+        tParLok->setItem(i, 1, new QTableWidgetItem(QString::number(painter->paramB.at(i))));
+        tParLok->setItem(i, 2, new QTableWidgetItem(QString::number(painter->deltaX.at(i))));
+        tParLok->setItem(i, 3, new QTableWidgetItem(QString::number(painter->deltaY.at(i))));
+        tParLok->setItem(i, 4, new QTableWidgetItem(QString::number(painter->startph.at(i))));
+        tParLok->setItem(i, 5, new QTableWidgetItem(QString::number(painter->speedL.at(i))));
+        tParLok->setItem(i, 6, new QTableWidgetItem(QString::number(painter->radius.at(i))));
     }
 }
 
 void SettingLok::changeNumberLok(int _count)
 {
-    model->nLok = _count;
-    model->imPoints.clear();
+    painter->nLok = _count;
+    painter->imPoints.clear();
 
     tParLok->setRowCount(_count);
     loadTable();
@@ -76,37 +76,37 @@ void SettingLok::changeParLok(int _i, int _j)
     {
     case 0:
     {
-        model->paramA[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->paramA[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 1:
     {
-        model->paramB[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->paramB[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 2:
     {
-        model->deltaX[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->deltaX[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 3:
     {
-        model->deltaY[_i] = tParLok->item(_i, _j)->text().toFloat() * (-1.0);
+        painter->deltaY[_i] = tParLok->item(_i, _j)->text().toFloat() * (-1.0);
         break;
     }
     case 4:
     {
-        model->startph[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->startph[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 5:
     {
-        model->speedL[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->speedL[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 6:
     {
-        model->radius[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->radius[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     default:
@@ -114,6 +114,6 @@ void SettingLok::changeParLok(int _i, int _j)
         break;
     }
     }
-    model->imPoints.clear();
-    model->repaint();
+    painter->imPoints.clear();
+    painter->repaint();
 }

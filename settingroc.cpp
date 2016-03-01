@@ -1,9 +1,9 @@
 #include "settingroc.h"
 
-SettingRoc::SettingRoc(Model *_model, QWidget *parent) :
+SettingRoc::SettingRoc(Painter *_painter, QWidget *parent) :
     QWidget(parent)
 {
-    this->model = _model;
+    this->painter = _painter;
 
     this->setWindowTitle(QObject::tr("Параметры целей"));
 
@@ -14,7 +14,7 @@ SettingRoc::SettingRoc(Model *_model, QWidget *parent) :
     QSlider *sliderRoc = new QSlider(Qt::Horizontal);
     sliderRoc->setRange(1, 9);
     sliderRoc->setTickInterval(1);
-    sliderRoc->setValue(model->nRoc);
+    sliderRoc->setValue(painter->nRoc);
     sliderRoc->setTickPosition(QSlider::TicksAbove);
     sliderRoc->setFixedWidth(100);
     QObject::connect(sliderRoc, SIGNAL(valueChanged(int)), this, SLOT(changeNumberRoc(int)));
@@ -22,13 +22,13 @@ SettingRoc::SettingRoc(Model *_model, QWidget *parent) :
     lNumberRoc = new QLCDNumber(1);
     lNumberRoc->setSegmentStyle(QLCDNumber::Flat);
     lNumberRoc->setMode(QLCDNumber::Dec);
-    lNumberRoc->display(model->nRoc);
+    lNumberRoc->display(painter->nRoc);
     lNumberRoc->setFixedWidth(100);
     gridLayout->addWidget(lNumberRoc, 0, 2, 1, 1);
 
     gridLayout->addWidget(new QLabel(QObject::tr("\tПараметры целей:")), 1, 0, 1, 3);
 
-    tParRoc = new QTableWidget(model->nRoc, 4, this);
+    tParRoc = new QTableWidget(painter->nRoc, 4, this);
     tParRoc->setHorizontalHeaderLabels(QStringList() << "Координата X" << "Координата Y" << "Скор. X (км/ч)" << "Скор. Y (км/ч)");
     QObject::connect(tParRoc, SIGNAL(cellChanged(int,int)), this, SLOT(changeParRoc(int,int)));
     gridLayout->addWidget(tParRoc, 2, 0, 1, 3);
@@ -47,19 +47,19 @@ SettingRoc::~SettingRoc()
 
 void SettingRoc::loadTable()
 {
-    for(int i = 0; i < model->nRoc; ++i)
+    for(int i = 0; i < painter->nRoc; ++i)
     {
-        tParRoc->setItem(i, 0, new QTableWidgetItem(QString::number(model->coordX.at(i))));
-        tParRoc->setItem(i, 1, new QTableWidgetItem(QString::number(model->coordY.at(i))));
-        tParRoc->setItem(i, 2, new QTableWidgetItem(QString::number(model->sRocX.at(i))));
-        tParRoc->setItem(i, 3, new QTableWidgetItem(QString::number(model->sRocY.at(i))));
+        tParRoc->setItem(i, 0, new QTableWidgetItem(QString::number(painter->coordX.at(i))));
+        tParRoc->setItem(i, 1, new QTableWidgetItem(QString::number(painter->coordY.at(i))));
+        tParRoc->setItem(i, 2, new QTableWidgetItem(QString::number(painter->sRocX.at(i))));
+        tParRoc->setItem(i, 3, new QTableWidgetItem(QString::number(painter->sRocY.at(i))));
     }
 }
 
 void SettingRoc::changeNumberRoc(int _count)
 {
-    model->nRoc = _count;
-    model->imPoints.clear();
+    painter->nRoc = _count;
+    painter->imPoints.clear();
 
     tParRoc->setRowCount(_count);
     loadTable();
@@ -74,22 +74,22 @@ void SettingRoc::changeParRoc(int _i, int _j)
     {
     case 0:
     {
-        model->coordX[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->coordX[_i] = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     case 1:
     {
-        model->coordY[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->coordY[_i] = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     case 2:
     {
-        model->sRocX[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->sRocX[_i] = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     case 3:
     {
-        model->sRocY[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->sRocY[_i] = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     default:
@@ -97,6 +97,6 @@ void SettingRoc::changeParRoc(int _i, int _j)
         break;
     }
     }
-    model->imPoints.clear();
-    model->repaint();
+    painter->imPoints.clear();
+    painter->repaint();
 }

@@ -1,13 +1,13 @@
 #include <QApplication>
 
-#include "sdimain.h"
+#include "multilateration.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    SDImain sdimain;
-    sdimain.showMaximized();
+    MultiLateration multiLateration;
+    multiLateration.showMaximized();
 
     return a.exec();
 }

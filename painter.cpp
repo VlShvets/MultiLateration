@@ -1,6 +1,6 @@
-#include "model.h"
+#include "painter.h"
 
-Model::Model(QWidget *parent)
+Painter::Painter(QWidget *parent)
     : QWidget(parent)
 {
     this->setWindowTitle(QObject::tr("Модель"));
@@ -27,12 +27,12 @@ Model::Model(QWidget *parent)
     initializationParOfRoc();
 }
 
-Model::~Model()
+Painter::~Painter()
 {
     delete tTime;
 }
 
-void Model::initializationParOfLok()
+void Painter::initializationParOfLok()
 {
     paramA.push_back(10.0);     paramA.push_back(2.0);      paramA.push_back(2.0);      paramA.push_back(10.0);     paramA.push_back(10.0);
     paramB.push_back(2.0);      paramB.push_back(10.0);     paramB.push_back(10.0);     paramB.push_back(2.0);      paramB.push_back(10.0);
@@ -43,7 +43,7 @@ void Model::initializationParOfLok()
     radius.push_back(10.0);     radius.push_back(10.0);     radius.push_back(10.0);     radius.push_back(10.0);     radius.push_back(10.0);
 }
 
-void Model::initializationParOfRoc()
+void Painter::initializationParOfRoc()
 {
     for(int j = 0; j < 9; ++j)
     {
@@ -54,7 +54,7 @@ void Model::initializationParOfRoc()
     }
 }
 
-QVector <QVector <bool> > Model::IdentificationLocator()
+QVector <QVector <bool> > Painter::IdentificationLocator()
 {
     QVector <QVector <bool> > temp;
 
@@ -74,7 +74,7 @@ QVector <QVector <bool> > Model::IdentificationLocator()
     return temp;
 }
 
-void Model::timerOut()
+void Painter::timerOut()
 {
     /// Время
     if(time < totalTime)
@@ -89,7 +89,7 @@ void Model::timerOut()
     repaint();
 }
 
-void Model::mousePressEvent(QMouseEvent * _pEvent)
+void Painter::mousePressEvent(QMouseEvent * _pEvent)
 {
     if(!_pEvent)
         return;
@@ -97,12 +97,12 @@ void Model::mousePressEvent(QMouseEvent * _pEvent)
     this->setCursor(Qt::CursorShape(Qt::ClosedHandCursor));
 }
 
-void Model::mouseReleaseEvent(QMouseEvent *)
+void Painter::mouseReleaseEvent(QMouseEvent *)
 {
     this->setCursor(Qt::CursorShape(Qt::OpenHandCursor));
 }
 
-void Model::mouseMoveEvent(QMouseEvent * _pEvent)
+void Painter::mouseMoveEvent(QMouseEvent * _pEvent)
 {
     if(!_pEvent)
         return;
@@ -117,7 +117,7 @@ void Model::mouseMoveEvent(QMouseEvent * _pEvent)
     repaint();
 }
 
-void Model::wheelEvent(QWheelEvent * _pEvent)
+void Painter::wheelEvent(QWheelEvent * _pEvent)
 {
     if(!_pEvent || !_pEvent->delta())
     return;
@@ -150,7 +150,7 @@ void Model::wheelEvent(QWheelEvent * _pEvent)
     repaint();
 }
 
-void Model::paintEvent(QPaintEvent *)
+void Painter::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
     p.translate(width() / 2.0 + angleX, height() / 2.0 + angleY);

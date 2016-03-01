@@ -1,9 +1,9 @@
 #include "settingtotal.h"
 
-SettingTotal::SettingTotal(Model *_model, QWidget *parent) :
+SettingTotal::SettingTotal(Painter *_painter, QWidget *parent) :
     QWidget(parent)
 {
-    this->model = _model;
+    this->painter = _painter;
 
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     hLayout->addWidget(new QSplitter());
@@ -12,7 +12,7 @@ SettingTotal::SettingTotal(Model *_model, QWidget *parent) :
     QSlider *sliderMemory = new QSlider(Qt::Horizontal);
     sliderMemory->setRange(0, 200);
     sliderMemory->setTickInterval(20);
-    sliderMemory->setValue(model->sizeOfMemory);
+    sliderMemory->setValue(painter->sizeOfMemory);
     sliderMemory->setTickPosition(QSlider::TicksAbove);
     QObject::connect(sliderMemory, SIGNAL(valueChanged(int)), this, SLOT(changeSizeMemory(int)));
     hLayout->addWidget(sliderMemory);
@@ -24,7 +24,7 @@ SettingTotal::SettingTotal(Model *_model, QWidget *parent) :
 
     hLayout->addWidget(new QLabel(QObject::tr("Время моделирования:")));
     QSpinBox *sTotalTime = new QSpinBox(this);
-    sTotalTime->setValue((int) model->totalTime);
+    sTotalTime->setValue((int) painter->totalTime);
     sTotalTime->setRange(0, 600);
     sTotalTime->setSuffix(QObject::tr(" c"));
     QObject::connect(sTotalTime, SIGNAL(valueChanged(int)), this, SLOT(changeTotalTime(int)));
@@ -47,20 +47,20 @@ SettingTotal::~SettingTotal()
 
 void SettingTotal::changeSizeMemory(int _count)
 {
-    model->sizeOfMemory = _count + 1;
+    painter->sizeOfMemory = _count + 1;
 }
 
 void SettingTotal::visualizerStartStop()
 {
     if(isStart)
     {
-        model->tTime->stop();
+        painter->tTime->stop();
 
         pStartStop->setText(QObject::tr("Запустить"));
     }
     else
     {
-        model->tTime->start((int) (100.0));
+        painter->tTime->start((int) (100.0));
 
         pStartStop->setText(QObject::tr("Остановить"));
 
@@ -70,11 +70,11 @@ void SettingTotal::visualizerStartStop()
 
 void SettingTotal::changeTotalTime(int _count)
 {
-    model->totalTime = (float) _count;
+    painter->totalTime = (float) _count;
 }
 
 void SettingTotal::visualizerStartFromStart()
 {
-    model->time = (float) 0.0;
-    model->repaint();
+    painter->time = (float) 0.0;
+    painter->repaint();
 }

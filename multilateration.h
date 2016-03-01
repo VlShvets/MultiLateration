@@ -9,16 +9,16 @@
 #include "settingroc.h"
 #include "settingtotal.h"
 
-class SDImain : public QMainWindow
+class MultiLateration : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    SDImain(QWidget *parent = 0);
-    ~SDImain();
+    MultiLateration(QWidget *parent = 0);
+    ~MultiLateration();
 
 private:
-    Model *model;
+    Painter *painter;
     SettingLok *settingLok;
     SettingRoc *settingRoc;
     SettingTotal *settingTotal;

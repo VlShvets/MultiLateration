@@ -1,14 +1,14 @@
-#include "sdimain.h"
+#include "multilateration.h"
 
-SDImain::SDImain(QWidget *parent)
+MultiLateration::MultiLateration(QWidget *parent)
     : QMainWindow(parent)
 {
-    model = new Model;
-    settingLok = new SettingLok(model);
-    settingRoc = new SettingRoc(model);
-    settingTotal = new SettingTotal(model);
+    painter = new Painter;
+    settingLok = new SettingLok(painter);
+    settingRoc = new SettingRoc(painter);
+    settingTotal = new SettingTotal(painter);
 
-    setCentralWidget(model);
+    setCentralWidget(painter);
 
     QDockWidget *dSettingForLoc = new QDockWidget(this);
     dSettingForLoc->setWidget(settingLok);
@@ -28,9 +28,9 @@ SDImain::SDImain(QWidget *parent)
     addToolBar(tSettingTotal);
 }
 
-SDImain::~SDImain()
+MultiLateration::~MultiLateration()
 {
     delete settingRoc;
     delete settingLok;
-    delete model;
+    delete painter;
 }

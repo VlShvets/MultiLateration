@@ -9,15 +9,13 @@
 
 #include <qmath.h>
 
-#include <QDebug>
-
-class Model : public QWidget
+class Painter : public QWidget
 {
     Q_OBJECT
 
 public:
-    Model(QWidget *parent = 0);
-    ~Model();
+    Painter(QWidget *parent = 0);
+    ~Painter();
 
     int nLok;                   /// Колличество локаторов
     int nRoc;                   /// Колличество целей

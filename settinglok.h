@@ -7,15 +7,15 @@
 #include <QSlider>
 #include <QTableWidget>
 
-#include "model.h"
+#include "painter.h"
 
 class SettingLok : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SettingLok(class Model *_model, QWidget *parent = 0);   /// Конструктор класса
-    ~SettingLok();                                                   /// Деструктор класса
+    explicit SettingLok(Painter *_painter, QWidget *parent = 0);    /// Конструктор класса
+    ~SettingLok();                                                  /// Деструктор класса
 
 private slots:
     void changeNumberLok(int _count);   /// Изменение количества локаторов
@@ -27,7 +27,7 @@ private:
     QLCDNumber *lNumberLok;     /// Дисплей количества локаторов
     QTableWidget *tParLok;      /// Таблица параметров локаторов
 
-    class Model *model;
+    class Painter *painter;
 };
 
 #endif // SETTINGLOK_H
