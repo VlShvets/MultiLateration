@@ -31,21 +31,30 @@ public:
 
     QQueue <QVector <QVector <QPointF> > > imPoints;  /// Мнимые точки
 
-    /// Параметры локтаоров
-    QVector <float> paramA;     /// Первая главная полуось элипса
-    QVector <float> paramB;     /// Вторая главная полуось элипса
-    QVector <float> deltaX;     /// Смещение элипса по оси X
-    QVector <float> deltaY;     /// Смещение элипса по оси Y
-    QVector <float> startph;    /// Начальная фаза движения локатора
-    QVector <float> speedL;     /// Скорость локаторов
-    QVector <float> radius;     /// Радиус локации
+    struct Lok
+    {
+        float paramA;   /// Первая главная полуось элипса
+        float paramB;   /// Вторая главная полуось элипса
+        float deltaX;   /// Смещение элипса по оси X
+        float deltaY;   /// Смещение элипса по оси Y
+        float startph;  /// Начальная фаза движения локатора
+        float speed;    /// Скорость локаторов
+        float radius;   /// Радиус локации
 
-    /// Параметры ракет
-    QVector <float> coordX;     /// Координата X
-    QVector <float> coordY;     /// Координата Y
-    QVector <float> sRocX;      /// Скорость X
-    QVector <float> sRocY;      /// Скорость Y
+        QPointF pos;    /// Текущее положение
+    };
+    QVector <Lok> lok;  /// Локаторы
 
+    struct Roc
+    {
+        float coordX;   /// Координата X
+        float coordY;   /// Координата Y
+        float speedX;   /// Скорость X
+        float speedY;   /// Скорость Y
+
+        QPointF pos;    /// Текущее положение
+    };
+    QVector <Roc> roc;  /// Цели
 
 protected:
     void paintEvent(QPaintEvent *_pEvent);
@@ -58,13 +67,6 @@ private:
     void initializationParOfRoc();  /// Начальная инициализация параметров ракет
 
     QVector <QVector <bool> > IdentificationLocator();  /// Локация целей
-
-    QVector <QVector <bool> > identificationLocator;    /// Двумерный массив идентификации целей локаторами
-
-    /// Наборы точек и линий для отрисовки движущихся объектов
-    QVector <QPointF> pLok;     /// Локаторы
-    QVector <QPointF> pRoc;     /// Цели
-    QVector <QLineF> line;      /// Линии для отрисовки пелингов
 };
 
 #endif // MODEL_H

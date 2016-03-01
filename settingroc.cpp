@@ -47,10 +47,10 @@ void SettingRoc::loadTable()
 {
     for(int i = 0; i < painter->nRoc; ++i)
     {
-        tParRoc->setItem(i, 0, new QTableWidgetItem(QString::number(painter->coordX.at(i))));
-        tParRoc->setItem(i, 1, new QTableWidgetItem(QString::number(painter->coordY.at(i))));
-        tParRoc->setItem(i, 2, new QTableWidgetItem(QString::number(painter->sRocX.at(i))));
-        tParRoc->setItem(i, 3, new QTableWidgetItem(QString::number(painter->sRocY.at(i))));
+        tParRoc->setItem(i, 0, new QTableWidgetItem(QString::number(painter->roc.at(i).coordX)));
+        tParRoc->setItem(i, 1, new QTableWidgetItem(QString::number(painter->roc.at(i).coordY)));
+        tParRoc->setItem(i, 2, new QTableWidgetItem(QString::number(painter->roc.at(i).speedX)));
+        tParRoc->setItem(i, 3, new QTableWidgetItem(QString::number(painter->roc.at(i).speedY)));
     }
 }
 
@@ -71,22 +71,22 @@ void SettingRoc::changeParRoc(int _i, int _j)
     {
     case 0:
     {
-        painter->coordX[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->roc[_i].coordX = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     case 1:
     {
-        painter->coordY[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->roc[_i].coordY = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     case 2:
     {
-        painter->sRocX[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->roc[_i].speedX = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     case 3:
     {
-        painter->sRocY[_i] = tParRoc->item(_i, _j)->text().toFloat();
+        painter->roc[_i].speedY = tParRoc->item(_i, _j)->text().toFloat();
         break;
     }
     default:

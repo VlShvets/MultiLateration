@@ -46,13 +46,13 @@ void SettingLok::loadTable()
 {
     for(int i = 0; i < painter->nLok; ++i)
     {
-        tParLok->setItem(i, 0, new QTableWidgetItem(QString::number(painter->paramA.at(i))));
-        tParLok->setItem(i, 1, new QTableWidgetItem(QString::number(painter->paramB.at(i))));
-        tParLok->setItem(i, 2, new QTableWidgetItem(QString::number(painter->deltaX.at(i))));
-        tParLok->setItem(i, 3, new QTableWidgetItem(QString::number(painter->deltaY.at(i))));
-        tParLok->setItem(i, 4, new QTableWidgetItem(QString::number(painter->startph.at(i))));
-        tParLok->setItem(i, 5, new QTableWidgetItem(QString::number(painter->speedL.at(i))));
-        tParLok->setItem(i, 6, new QTableWidgetItem(QString::number(painter->radius.at(i))));
+        tParLok->setItem(i, 0, new QTableWidgetItem(QString::number(painter->lok.at(i).paramA)));
+        tParLok->setItem(i, 1, new QTableWidgetItem(QString::number(painter->lok.at(i).paramB)));
+        tParLok->setItem(i, 2, new QTableWidgetItem(QString::number(painter->lok.at(i).deltaX)));
+        tParLok->setItem(i, 3, new QTableWidgetItem(QString::number(painter->lok.at(i).deltaY)));
+        tParLok->setItem(i, 4, new QTableWidgetItem(QString::number(painter->lok.at(i).startph)));
+        tParLok->setItem(i, 5, new QTableWidgetItem(QString::number(painter->lok.at(i).speed)));
+        tParLok->setItem(i, 6, new QTableWidgetItem(QString::number(painter->lok.at(i).radius)));
     }
 }
 
@@ -73,37 +73,37 @@ void SettingLok::changeParLok(int _i, int _j)
     {
     case 0:
     {
-        painter->paramA[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].paramA = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 1:
     {
-        painter->paramB[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].paramB = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 2:
     {
-        painter->deltaX[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].deltaX = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 3:
     {
-        painter->deltaY[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].deltaY = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 4:
     {
-        painter->startph[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].startph = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 5:
     {
-        painter->speedL[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].speed = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 6:
     {
-        painter->radius[_i] = tParLok->item(_i, _j)->text().toFloat();
+        painter->lok[_i].radius = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     default:
