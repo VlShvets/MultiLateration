@@ -1,5 +1,5 @@
-#ifndef MULTILATERATION_H
-#define MULTILATERATION_H
+#ifndef SDIMAIN_H
+#define SDIMAIN_H
 
 #include <QMainWindow>
 #include <QToolBar>
@@ -9,19 +9,19 @@
 #include "settingroc.h"
 #include "settingtotal.h"
 
-class MultiLateration : public QMainWindow
+class SDImain : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MultiLateration(QWidget *parent = 0);
-    ~MultiLateration();
+    SDImain(QWidget *parent = 0);
+    ~SDImain();
 
 private:
-    Painter *painter;
+    Model *model;
     SettingLok *settingLok;
     SettingRoc *settingRoc;
     SettingTotal *settingTotal;
 };
 
-#endif // MULTILATERATION_H
+#endif // SDIMAIN_H

@@ -1,20 +1,14 @@
-#include "multilateration.h"
+#include "sdimain.h"
 
-MultiLateration::MultiLateration(QWidget *parent)
+SDImain::SDImain(QWidget *parent)
     : QMainWindow(parent)
 {
-#ifdef Q_OS_WIN         /// Widnows
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("cp-1251"));
-#elif defined Q_OS_UNIX /// Linux
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
-#endif
+    model = new Model;
+    settingLok = new SettingLok(model);
+    settingRoc = new SettingRoc(model);
+    settingTotal = new SettingTotal(model);
 
-    painter = new Painter;
-    settingLok = new SettingLok(painter);
-    settingRoc = new SettingRoc(painter);
-    settingTotal = new SettingTotal(painter);
-
-    setCentralWidget(painter);
+    setCentralWidget(model);
 
     QDockWidget *dSettingForLoc = new QDockWidget(this);
     dSettingForLoc->setWidget(settingLok);
@@ -34,10 +28,9 @@ MultiLateration::MultiLateration(QWidget *parent)
     addToolBar(tSettingTotal);
 }
 
-MultiLateration::~MultiLateration()
+SDImain::~SDImain()
 {
     delete settingRoc;
     delete settingLok;
-    delete settingTotal;
-    delete painter;
+    delete model;
 }

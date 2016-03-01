@@ -1,5 +1,5 @@
-#ifndef PAINTER_H
-#define PAINTER_H
+#ifndef MODEL_H
+#define MODEL_H
 
 #include <QWidget>
 #include <QPainter>
@@ -7,15 +7,17 @@
 #include <QQueue>
 #include <QTimer>
 
-#include "grapher2d.h"
+#include <qmath.h>
 
-class Painter : public Grapher2D
+#include <QDebug>
+
+class Model : public QWidget
 {
     Q_OBJECT
 
 public:
-    Painter(QWidget *parent = 0);
-    ~Painter();
+    Model(QWidget *parent = 0);
+    ~Model();
 
     int nLok;                   /// Колличество локаторов
     int nRoc;                   /// Колличество целей
@@ -46,7 +48,11 @@ public:
 
 
 protected:
-    void paintEvent(QPaintEvent * _pEvent);
+    void mousePressEvent(QMouseEvent * _pEvent);
+    void mouseMoveEvent(QMouseEvent * _pEvent);
+    void wheelEvent(QWheelEvent * _pEvent);
+    void mouseReleaseEvent(QMouseEvent *);
+    void paintEvent(QPaintEvent *);
 
 private slots:
     void timerOut();
@@ -57,12 +63,21 @@ private:
 
     QVector <QVector <bool> > IdentificationLocator();  /// Локация целей
 
+    /// Переменные, связанные с движением курсора мыши
+    float angleX, angleY;   /// Сдвиг системы координат
+    float angleTemp;        /// Шаг штрихов координатной плоскости
+    int indexTemp;          /// Цифровые значения осей системы координат
+    int sizeScale;          /// Размер штрихов координатной плоскости
+    QPoint oldPosMouse;     /// Предыдущая позиция курсора мыши
+    int scale, scaleTemp;   /// Масштаб системы координат
+
     QVector <QVector <bool> > identificationLocator;    /// Двумерный массив идентификации целей локаторами
 
     /// Наборы точек и линий для отрисовки движущихся объектов
-    QVector <QPointF> pLok;     /// Локаторы
-    QVector <QPointF> pRoc;     /// Цели
+    QVector <QPoint> point;     /// Точки для отрисовки координатных осей
+    QVector <QPointF> pLok;      /// Локаторы
+    QVector <QPointF> pRoc;      /// Цели
     QVector <QLineF> line;      /// Линии для отрисовки пелингов
 };
 
-#endif // PAINTER_H
+#endif // MODEL_H

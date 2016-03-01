@@ -8,15 +8,15 @@
 #include <QPushButton>
 #include <QSpinBox>
 
-#include "painter.h"
+#include "model.h"
 
 class SettingTotal : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SettingTotal(Painter *_painter, QWidget *parent = 0);  /// Конструктор класса
-    ~SettingTotal();                                                /// Деструктор класса
+    explicit SettingTotal(class Model *_model, QWidget *parent = 0);    /// Конструктор класса
+    ~SettingTotal();                                                    /// Деструктор класса
 
 private slots:
     void changeSizeMemory(int _count);  /// Изменение длины следа
@@ -29,7 +29,7 @@ private:
     bool isStart;                   /// Флаг состояния кнопки
     QPushButton *pStartFromStart;   /// Кнопка запуска с начала
 
-    Painter *painter;
+    class Model *model;
 };
 
 #endif // SETTINGTOTAL_H

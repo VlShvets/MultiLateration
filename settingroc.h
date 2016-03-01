@@ -7,14 +7,14 @@
 #include <QSlider>
 #include <QTableWidget>
 
-#include "painter.h"
+#include "model.h"
 
 class SettingRoc : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SettingRoc(Painter *_painter, QWidget *parent = 0);    /// Конструктор класса
+    explicit SettingRoc(class Model *_model, QWidget *parent = 0);  /// Конструктор класса
     ~SettingRoc();                                                  /// Деструктор класса
 
 private slots:
@@ -27,7 +27,7 @@ private:
     QLCDNumber *lNumberRoc;     /// Дисплей количества целей
     QTableWidget *tParRoc;      /// Таблица параметров целей
 
-    Painter *painter;
+    class Model *model;
 };
 
 #endif // SETTINGROC_H
