@@ -9,7 +9,9 @@
 
 #include <qmath.h>
 
-class Painter : public QWidget
+#include <grapher2d.h>
+
+class Painter : public Grapher2D
 {
     Q_OBJECT
 
@@ -23,9 +25,9 @@ public:
     int sizeOfMemory;           /// Длина следа
 
     /// Переменные, связанные со временем
-    QTimer *tTime;   /// Таймер времени
-    float totalTime;        /// Общее время моделирования (в секундах)
-    float time;             /// Текущее время
+    QTimer *tTime;      /// Таймер времени
+    float totalTime;    /// Общее время моделирования (в секундах)
+    float time;         /// Текущее время
 
     QQueue <QVector <QVector <QPointF> > > imPoints;  /// Мнимые точки
 
@@ -46,11 +48,7 @@ public:
 
 
 protected:
-    void mousePressEvent(QMouseEvent * _pEvent);
-    void mouseMoveEvent(QMouseEvent * _pEvent);
-    void wheelEvent(QWheelEvent * _pEvent);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *_pEvent);
 
 private slots:
     void timerOut();
@@ -61,20 +59,11 @@ private:
 
     QVector <QVector <bool> > IdentificationLocator();  /// Локация целей
 
-    /// Переменные, связанные с движением курсора мыши
-    float angleX, angleY;   /// Сдвиг системы координат
-    float angleTemp;        /// Шаг штрихов координатной плоскости
-    int indexTemp;          /// Цифровые значения осей системы координат
-    int sizeScale;          /// Размер штрихов координатной плоскости
-    QPoint oldPosMouse;     /// Предыдущая позиция курсора мыши
-    int scale, scaleTemp;   /// Масштаб системы координат
-
     QVector <QVector <bool> > identificationLocator;    /// Двумерный массив идентификации целей локаторами
 
     /// Наборы точек и линий для отрисовки движущихся объектов
-    QVector <QPoint> point;     /// Точки для отрисовки координатных осей
-    QVector <QPointF> pLok;      /// Локаторы
-    QVector <QPointF> pRoc;      /// Цели
+    QVector <QPointF> pLok;     /// Локаторы
+    QVector <QPointF> pRoc;     /// Цели
     QVector <QLineF> line;      /// Линии для отрисовки пелингов
 };
 

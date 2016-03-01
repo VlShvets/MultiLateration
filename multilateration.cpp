@@ -32,5 +32,6 @@ MultiLateration::~MultiLateration()
 {
     delete settingRoc;
     delete settingLok;
+    delete settingTotal;
     delete painter;
 }

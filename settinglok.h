@@ -22,12 +22,13 @@ private slots:
     void changeParLok(int _i, int _j);  /// Изменение параметров локаторов
 
 private:
-    void loadTable();   /// Загрузка таблицы с начальными данными
+    void loadTable();           /// Загрузка таблицы с начальными данными
+
+    class Painter *painter;
 
     QLCDNumber *lNumberLok;     /// Дисплей количества локаторов
     QTableWidget *tParLok;      /// Таблица параметров локаторов
 
-    class Painter *painter;
 };
 
 #endif // SETTINGLOK_H

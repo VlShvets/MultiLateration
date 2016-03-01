@@ -24,12 +24,12 @@ private slots:
     void changeTotalTime(int _count);   /// Изменение времени моделирования
     void visualizerStartFromStart();    /// Запуск с начала
 
-private:
+private:    
+    class Painter *painter;
+
     QPushButton *pStartStop;        /// Кнопка запуска и остановки процессов
     bool isStart;                   /// Флаг состояния кнопки
     QPushButton *pStartFromStart;   /// Кнопка запуска с начала
-
-    class Painter *painter;
 };
 
 #endif // SETTINGTOTAL_H

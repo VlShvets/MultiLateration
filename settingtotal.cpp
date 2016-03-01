@@ -1,10 +1,8 @@
 #include "settingtotal.h"
 
 SettingTotal::SettingTotal(Painter *_painter, QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent), painter(_painter), isStart(false)
 {
-    this->painter = _painter;
-
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     hLayout->addWidget(new QSplitter());
     hLayout->addWidget(new QLabel(QObject::tr("Длина следа:")));
@@ -60,7 +58,7 @@ void SettingTotal::visualizerStartStop()
     }
     else
     {
-        painter->tTime->start((int) (100.0));
+        painter->tTime->start(100);
 
         pStartStop->setText(QObject::tr("Остановить"));
 
@@ -75,6 +73,7 @@ void SettingTotal::changeTotalTime(int _count)
 
 void SettingTotal::visualizerStartFromStart()
 {
-    painter->time = (float) 0.0;
+    painter->time = 0.0;
+    painter->imPoints.clear();
     painter->repaint();
 }

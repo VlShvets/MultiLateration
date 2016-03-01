@@ -1,10 +1,8 @@
 #include "settingroc.h"
 
 SettingRoc::SettingRoc(Painter *_painter, QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent), painter(_painter)
 {
-    this->painter = _painter;
-
     this->setWindowTitle(QObject::tr("Параметры целей"));
 
     QGridLayout *gridLayout = new QGridLayout(this);
@@ -69,7 +67,6 @@ void SettingRoc::changeNumberRoc(int _count)
 
 void SettingRoc::changeParRoc(int _i, int _j)
 {
-//    qDebug() << _i << "\t" << _j;
     switch(_j)
     {
     case 0:

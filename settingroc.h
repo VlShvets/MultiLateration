@@ -18,16 +18,16 @@ public:
     ~SettingRoc();                                                      /// Деструктор класса
 
 private slots:
-    void changeNumberRoc(int _count);     /// Изменение количества целей
+    void changeNumberRoc(int _count);   /// Изменение количества целей
     void changeParRoc(int _i, int _j);  /// Изменение параметров локаторов
 
 private:
     void loadTable();           /// Загрузка таблицы с начальными данными
 
+    class Painter *painter;
+
     QLCDNumber *lNumberRoc;     /// Дисплей количества целей
     QTableWidget *tParRoc;      /// Таблица параметров целей
-
-    class Painter *painter;
 };
 
 #endif // SETTINGROC_H

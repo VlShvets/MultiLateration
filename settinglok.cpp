@@ -1,10 +1,8 @@
 #include "settinglok.h"
 
 SettingLok::SettingLok(Painter *_painter, QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent), painter(_painter)
 {
-    this->painter = _painter;
-
     this->setWindowTitle(QObject::tr("Параметры измерителей"));
 
     QGridLayout *gridLayout = new QGridLayout(this);
@@ -71,7 +69,6 @@ void SettingLok::changeNumberLok(int _count)
 
 void SettingLok::changeParLok(int _i, int _j)
 {
-//    qDebug() << _i << "\t" << _j;
     switch(_j)
     {
     case 0:
@@ -91,7 +88,7 @@ void SettingLok::changeParLok(int _i, int _j)
     }
     case 3:
     {
-        painter->deltaY[_i] = tParLok->item(_i, _j)->text().toFloat() * (-1.0);
+        painter->deltaY[_i] = tParLok->item(_i, _j)->text().toFloat();
         break;
     }
     case 4:
