@@ -7,6 +7,7 @@
 #include <QSlider>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QStyle>
 
 #include "painter.h"
 

@@ -56,7 +56,7 @@ void Painter::initializationParOfRoc()
     }
 }
 
-QVector <QVector <bool> > Painter::IdentificationLocator()
+QVector <QVector <bool> > Painter::IdentificationLocator(QVector <QPointF> *_pLok, QVector <QPointF> *_pRoc)
 {
     QVector <QVector <bool> > temp;
 
@@ -65,8 +65,8 @@ QVector <QVector <bool> > Painter::IdentificationLocator()
         temp.push_back(QVector <bool> ());
         for(int j = 0; j < nRoc; ++j)
         {
-            if(qSqrt((lok.at(i).pos.x() - roc.at(j).pos.x()) * (lok.at(i).pos.x() - roc.at(j).pos.x()) +
-                     (lok.at(i).pos.y() - roc.at(j).pos.y()) * (lok.at(i).pos.y() - roc.at(j).pos.y())) <= lok.at(i).radius)
+            if(qSqrt((_pLok->at(i).x() - _pRoc->at(j).x()) * (_pLok->at(i).x() - _pRoc->at(j).x()) +
+                     (_pLok->at(i).y() - _pRoc->at(j).y()) * (_pLok->at(i).y() - _pRoc->at(j).y())) <= lok.at(i).radius)
                 temp.last().push_back(true);
             else
                 temp.last().push_back(false);
@@ -102,7 +102,7 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
     pen.setCosmetic(true);
 
     /// Локаторы
-    QVector <QPoint> pLok;
+    QVector <QPointF> pLok;
     for(int j = 0; j < nLok; ++j)
     {
         /// Траектория движения локатора
@@ -121,16 +121,15 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
         pen.setStyle(Qt::DotLine);
         p.setPen(pen);
         p.drawPoint(pLok.last());
-        lok[j].pos = pLok.last();
 
         /// Радиус действия локатора
         pen.setWidth(3);
         p.setPen(pen);
-        p.drawEllipse(lok.at(j).pos, lok.at(j).radius, lok.at(j).radius);
+        p.drawEllipse(pLok.at(j), lok.at(j).radius, lok.at(j).radius);
     }
 
     /// Ракеты
-    QVector <QPoint> pRoc;
+    QVector <QPointF> pRoc;
     for(int j = 0; j < nRoc; ++j)
     {
         pRoc.push_back(QPoint((roc.at(j).coordX + roc.at(j).speedX * time),
@@ -140,20 +139,20 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
         pen.setStyle(Qt::DashLine);
         p.setPen(pen);
         p.drawPoint(pRoc.last());
-        roc[j].pos = pRoc.last();
+//        roc[j].pos = pRoc.last();
     }
 
     /// Пелинги
     QVector <QLineF> line;
     QVector <QVector <bool> > identificationLocator;
-    identificationLocator = IdentificationLocator();
+    identificationLocator = IdentificationLocator(&pLok, &pRoc);
     for(int i = 0; i < nLok; ++i)
     {
         for(int j = 0; j < nRoc; ++j)
         {
             if(identificationLocator[i][j])
             {
-                line.push_back(QLineF(lok.at(i).pos, roc.at(j).pos));   /// С точной информацией о местоположении цели
+                line.push_back(QLineF(pLok.at(i), pRoc.at(j)));   /// С точной информацией о местоположении цели
                 line.last().setLength(lok.at(i).radius);                /// С неточной информацией о местоположении цели
 
                 /// Отрисовка

@@ -8,6 +8,7 @@ SettingLok::SettingLok(Painter *_painter, QWidget *parent) :
     QGridLayout *gridLayout = new QGridLayout(this);
 
     gridLayout->addWidget(new QLabel(QObject::tr("Количество измерителей: ")), 0, 0, 1, 1);
+
     QSlider *sliderLok = new QSlider(Qt::Horizontal);
     sliderLok->setRange(1, 5);
     sliderLok->setTickInterval(1);
@@ -16,6 +17,7 @@ SettingLok::SettingLok(Painter *_painter, QWidget *parent) :
     sliderLok->setFixedWidth(100);
     QObject::connect(sliderLok, SIGNAL(valueChanged(int)), this, SLOT(changeNumberLok(int)));
     gridLayout->addWidget(sliderLok, 0, 1, 1, 1);
+
     lNumberLok = new QLCDNumber(1);
     lNumberLok->setSegmentStyle(QLCDNumber::Flat);
     lNumberLok->setMode(QLCDNumber::Dec);

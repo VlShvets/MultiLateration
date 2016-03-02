@@ -4,7 +4,9 @@ SettingTotal::SettingTotal(Painter *_painter, QWidget *parent) :
     QWidget(parent), painter(_painter), isStart(false)
 {
     QHBoxLayout *hLayout = new QHBoxLayout(this);
+
     hLayout->addWidget(new QSplitter());
+
     hLayout->addWidget(new QLabel(QObject::tr("Длина следа:")));
 
     QSlider *sliderMemory = new QSlider(Qt::Horizontal);
@@ -15,12 +17,16 @@ SettingTotal::SettingTotal(Painter *_painter, QWidget *parent) :
     QObject::connect(sliderMemory, SIGNAL(valueChanged(int)), this, SLOT(changeSizeMemory(int)));
     hLayout->addWidget(sliderMemory);
 
-    pStartStop = new QPushButton(QObject::tr("Запустить"));
+    pStartStop = new QPushButton;
+    pStartStop->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     pStartStop->setFixedWidth(200);
     QObject::connect(pStartStop, SIGNAL(clicked()), this, SLOT(visualizerStartStop()));
     hLayout->addWidget(pStartStop);
 
+    hLayout->addWidget(new QSplitter());
+
     hLayout->addWidget(new QLabel(QObject::tr("Время моделирования:")));
+
     QSpinBox *sTotalTime = new QSpinBox(this);
     sTotalTime->setValue((int) painter->totalTime);
     sTotalTime->setRange(0, 600);
@@ -32,6 +38,7 @@ SettingTotal::SettingTotal(Painter *_painter, QWidget *parent) :
     pStartFromStart->setFixedWidth(200);
     QObject::connect(pStartFromStart, SIGNAL(clicked()), this, SLOT(visualizerStartFromStart()));
     hLayout->addWidget(pStartFromStart);
+
     hLayout->addWidget(new QSplitter());
 
     this->setLayout(hLayout);
@@ -54,14 +61,13 @@ void SettingTotal::visualizerStartStop()
     {
         painter->tTime->stop();
 
-        pStartStop->setText(QObject::tr("Запустить"));
+        pStartStop->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     }
     else
     {
         painter->tTime->start(100);
 
-        pStartStop->setText(QObject::tr("Остановить"));
-
+        pStartStop->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
     }
     isStart = !isStart;
 }

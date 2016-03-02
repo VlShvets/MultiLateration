@@ -40,8 +40,6 @@ public:
         float startph;  /// Начальная фаза движения локатора
         float speed;    /// Скорость локаторов
         float radius;   /// Радиус локации
-
-        QPointF pos;    /// Текущее положение
     };
     QVector <Lok> lok;  /// Локаторы
 
@@ -51,8 +49,6 @@ public:
         float coordY;   /// Координата Y
         float speedX;   /// Скорость X
         float speedY;   /// Скорость Y
-
-        QPointF pos;    /// Текущее положение
     };
     QVector <Roc> roc;  /// Цели
 
@@ -66,7 +62,7 @@ private:
     void initializationParOfLok();  /// Начальная инициализация параметров локаторов
     void initializationParOfRoc();  /// Начальная инициализация параметров ракет
 
-    QVector <QVector <bool> > IdentificationLocator();  /// Локация целей
+    QVector <QVector <bool> > IdentificationLocator(QVector<QPointF> *_pLok, QVector<QPointF> *_pRoc);  /// Локация целей
 };
 
 #endif // MODEL_H

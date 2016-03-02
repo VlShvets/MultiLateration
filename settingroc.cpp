@@ -17,6 +17,7 @@ SettingRoc::SettingRoc(Painter *_painter, QWidget *parent) :
     sliderRoc->setFixedWidth(100);
     QObject::connect(sliderRoc, SIGNAL(valueChanged(int)), this, SLOT(changeNumberRoc(int)));
     gridLayout->addWidget(sliderRoc, 0, 1, 1, 1);
+
     lNumberRoc = new QLCDNumber(1);
     lNumberRoc->setSegmentStyle(QLCDNumber::Flat);
     lNumberRoc->setMode(QLCDNumber::Dec);
@@ -34,7 +35,6 @@ SettingRoc::SettingRoc(Painter *_painter, QWidget *parent) :
     loadTable();
 
     this->setLayout(gridLayout);
-    this->show();
 }
 
 SettingRoc::~SettingRoc()
