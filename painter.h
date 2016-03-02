@@ -1,13 +1,8 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef PAINTER_H
+#define PAINTER_H
 
-#include <QWidget>
-#include <QPainter>
-#include <QMouseEvent>
-#include <QQueue>
 #include <QTimer>
-
-#include <qmath.h>
+#include <QQueue>
 
 #include <grapher2d.h>
 
@@ -19,10 +14,10 @@ public:
     Painter(QWidget *parent = 0);
     ~Painter();
 
-    int nLok;                   /// Колличество локаторов
-    int nRoc;                   /// Колличество целей
+    int nLok;           /// Колличество локаторов
+    int nRoc;           /// Колличество целей
 
-    int sizeOfMemory;           /// Длина следа
+    int sizeOfMemory;   /// Длина следа
 
     /// Переменные, связанные со временем
     QTimer *tTime;      /// Таймер времени
@@ -62,7 +57,8 @@ private:
     void initializationParOfLok();  /// Начальная инициализация параметров локаторов
     void initializationParOfRoc();  /// Начальная инициализация параметров ракет
 
-    QVector <QVector <bool> > IdentificationLocator(QVector<QPointF> *_pLok, QVector<QPointF> *_pRoc);  /// Локация целей
+    /// Локация целей
+    QVector <QVector <bool> > IdentificationLocator(QVector<QPointF> *_pLok, QVector<QPointF> *_pRoc);
 };
 
-#endif // MODEL_H
+#endif // PAINTER_H

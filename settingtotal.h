@@ -28,8 +28,8 @@ private slots:
 private:    
     class Painter *painter;
 
-    QPushButton *pStartStop;        /// Кнопка запуска и остановки процессов
     bool isStart;                   /// Флаг состояния кнопки
+    QPushButton *pStartStop;        /// Кнопка запуска и остановки процессов
     QPushButton *pStartFromStart;   /// Кнопка запуска с начала
 };
 

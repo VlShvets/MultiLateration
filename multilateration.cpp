@@ -3,6 +3,12 @@
 MultiLateration::MultiLateration(QWidget *parent)
     : QMainWindow(parent)
 {
+#ifdef Q_OS_WIN         /// Widnows
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("cp-1251"));
+#elif defined Q_OS_UNIX /// Linux
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
+#endif
+
     painter = new Painter;
     settingLok = new SettingLok(painter);
     settingRoc = new SettingRoc(painter);
@@ -30,8 +36,8 @@ MultiLateration::MultiLateration(QWidget *parent)
 
 MultiLateration::~MultiLateration()
 {
-    delete settingRoc;
     delete settingLok;
+    delete settingRoc;
     delete settingTotal;
     delete painter;
 }

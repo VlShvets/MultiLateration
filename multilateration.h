@@ -1,7 +1,9 @@
-#ifndef SDIMAIN_H
-#define SDIMAIN_H
+#ifndef MULTILATERATION_H
+#define MULTILATERATION_H
 
+#include <QApplication>
 #include <QMainWindow>
+#include <QTextCodec>
 #include <QToolBar>
 #include <QDockWidget>
 
@@ -11,8 +13,6 @@
 
 class MultiLateration : public QMainWindow
 {
-    Q_OBJECT
-
 public:
     MultiLateration(QWidget *parent = 0);
     ~MultiLateration();
@@ -24,4 +24,4 @@ private:
     SettingTotal *settingTotal;
 };
 
-#endif // SDIMAIN_H
+#endif // MULTILATERATION_H

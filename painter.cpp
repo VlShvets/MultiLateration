@@ -7,12 +7,7 @@ Painter::Painter(QWidget *parent)
     setCSOrdMeasure(1000);
     setCSZoom(2);
 
-    this->setWindowTitle(QObject::tr("Модель"));
-
-    QPalette palette;
-    palette.setColor(backgroundRole(), Qt::white);
-    setPalette(palette);
-    setAutoFillBackground(true);
+    this->setWindowTitle(QObject::tr("МультиЛатерация"));
 
     nRoc = 3;
     nLok = 3;
@@ -30,6 +25,9 @@ Painter::Painter(QWidget *parent)
 Painter::~Painter()
 {
     delete tTime;
+    lok.clear();
+    roc.clear();
+    imPoints.clear();
 }
 
 void Painter::initializationParOfLok()
@@ -103,47 +101,48 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
 
     /// Локаторы
     QVector <QPointF> pLok;
-    for(int j = 0; j < nLok; ++j)
+    pen.setColor(Qt::darkBlue);
+    pen.setStyle(Qt::DashLine);
+    for(int i = 0; i < nLok; ++i)
     {
         /// Траектория движения локатора
-        pen.setColor(Qt::blue);
         pen.setWidth(1);
-        pen.setStyle(Qt::DashLine);
         p.setPen(pen);
-        p.drawEllipse(QPointF(lok.at(j).deltaX, lok.at(j).deltaY), lok.at(j).paramA, lok.at(j).paramB);
+        p.drawEllipse(QPointF(lok.at(i).deltaX, lok.at(i).deltaY), lok.at(i).paramA, lok.at(i).paramB);
 
         /// Локатор
-        pLok.push_back(QPoint((lok.at(j).paramA * qCos(lok.at(j).speed * time / (lok.at(j).paramA + lok.at(j).paramB)
-                                                       + (2 * M_PI / 360) * lok.at(j).startph) + lok.at(j).deltaX),
-                              (lok.at(j).paramB * qSin(lok.at(j).speed * time / (lok.at(j).paramA + lok.at(j).paramB)
-                                                       + (2 * M_PI / 360) * lok.at(j).startph) + lok.at(j).deltaY)));
+        pLok.push_back(QPoint(lok.at(i).paramA * qCos(lok.at(i).speed * time / (lok.at(i).paramA + lok.at(i).paramB)
+                                                      + (2 * M_PI / 360) * lok.at(i).startph) + lok.at(i).deltaX,
+                              lok.at(i).paramB * qSin(lok.at(i).speed * time / (lok.at(i).paramA + lok.at(i).paramB)
+                                                      + (2 * M_PI / 360) * lok.at(i).startph) + lok.at(i).deltaY));
         pen.setWidth(9);
-        pen.setStyle(Qt::DotLine);
         p.setPen(pen);
         p.drawPoint(pLok.last());
 
         /// Радиус действия локатора
         pen.setWidth(3);
         p.setPen(pen);
-        p.drawEllipse(pLok.at(j), lok.at(j).radius, lok.at(j).radius);
+        p.drawEllipse(pLok.at(i), lok.at(i).radius, lok.at(i).radius);
     }
 
     /// Ракеты
     QVector <QPointF> pRoc;
+    pen.setColor(Qt::darkGreen);
+    pen.setWidth(6);
+    p.setPen(pen);
     for(int j = 0; j < nRoc; ++j)
     {
-        pRoc.push_back(QPoint((roc.at(j).coordX + roc.at(j).speedX * time),
-                              (roc.at(j).coordY + roc.at(j).speedY * time)));
-        pen.setColor(Qt::darkGreen);
-        pen.setWidth(6);
-        pen.setStyle(Qt::DashLine);
-        p.setPen(pen);
+        pRoc.push_back(QPoint(roc.at(j).coordX + roc.at(j).speedX * time,
+                              roc.at(j).coordY + roc.at(j).speedY * time));
         p.drawPoint(pRoc.last());
-//        roc[j].pos = pRoc.last();
     }
 
     /// Пелинги
     QVector <QLineF> line;
+    pen.setColor(Qt::darkBlue);
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(1);
+    p.setPen(pen);
     QVector <QVector <bool> > identificationLocator;
     identificationLocator = IdentificationLocator(&pLok, &pRoc);
     for(int i = 0; i < nLok; ++i)
@@ -152,14 +151,10 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
         {
             if(identificationLocator[i][j])
             {
-                line.push_back(QLineF(pLok.at(i), pRoc.at(j)));   /// С точной информацией о местоположении цели
-                line.last().setLength(lok.at(i).radius);                /// С неточной информацией о местоположении цели
+                line.push_back(QLineF(pLok.at(i), pRoc.at(j)));     /// С точной информацией о местоположении цели
+                line.last().setLength(lok.at(i).radius);            /// С неточной информацией о местоположении цели
 
                 /// Отрисовка
-                pen.setColor(Qt::blue);
-                pen.setWidth(1);
-                pen.setStyle(Qt::SolidLine);
-                p.setPen(pen);
                 p.drawLine(line.last());
             }
             else
@@ -169,8 +164,6 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
 
     /// Отображение мнимых точек и их траекторий
     QPointF imPoint;
-    for(int i = imPoints.size(); i >= sizeOfMemory; --i)
-        imPoints.dequeue();
     imPoints.enqueue(QVector <QVector <QPointF> > ());
     for(int i = 1; i < line.size(); ++i)
     {
@@ -178,12 +171,11 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
         for(int j = 0; j < i; ++j)
         {
             /// Мнимые точки
+            pen.setWidth(6);
             if(line[i].intersect(line[j], &imPoint) == QLineF::BoundedIntersection &&
                     !pLok.contains(imPoint.toPoint()) && !pRoc.contains(imPoint.toPoint()))
             {
                 pen.setColor(Qt::red);
-                pen.setWidth(6);
-                pen.setStyle(Qt::SolidLine);
                 p.setPen(pen);
                 p.drawPoint(imPoint);
                 imPoints.last().last().push_back(imPoint);
@@ -195,26 +187,27 @@ void Painter::paintEvent(QPaintEvent *_pEvent)
             if(pRoc.contains(imPoint.toPoint()))
             {
                 pen.setColor(Qt::green);
-                pen.setWidth(6);
                 p.setPen(pen);
                 p.drawPoint(imPoint);
             }
 
             /// Траектория мнимых точек
+            pen.setColor(Qt::red);
+            pen.setWidth(1);
+            p.setPen(pen);
             for(int i = imPoints.size(); i > 1; --i)
             {
                 if(!imPoints.at(imPoints.size() - i).at(imPoints.last().size() - 1).at(imPoints.last().last().size() - 1).isNull() &&
                         !imPoints.at(imPoints.size() - i + 1).at(imPoints.last().size() - 1).at(imPoints.last().last().size() - 1).isNull())
                 {
-                    pen.setColor(Qt::red);
-                    pen.setWidth(1);
-                    p.setPen(pen);
                     p.drawLine(imPoints.at(imPoints.size() - i).at(imPoints.last().size() - 1).at(imPoints.last().last().size() - 1),
                                imPoints.at(imPoints.size() - i + 1).at(imPoints.last().size() - 1).at(imPoints.last().last().size() - 1));
                 }
             }
         }
     }
+    for(int i = imPoints.size(); i > sizeOfMemory - 1; --i)
+        imPoints.dequeue();
 
     pLok.clear();
     pRoc.clear();
